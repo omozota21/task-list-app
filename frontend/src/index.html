@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Aplicación</title>
+</head>
+<body>
+    <h1>Mi Aplicación</h1>
+    <!-- Aquí va tu contenido existente -->
+    
+    <h1>Lista de Tareas</h1>
+    <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Escribe una nueva tarea" required>
+        <button type="submit">Agregar Tarea</button>
+    </form>
+    <ul id="taskList"></ul>
+
+    <script>
+        // Aquí va el código JavaScript proporcionado
+        const form = document.getElementById('taskForm');
+        const taskInput = document.getElementById('taskInput');
+        const taskList = document.getElementById('taskList');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const task = taskInput.value;
+
+            const response = await fetch('http://localhost:3000/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ task }),
+            });
+
+            if (response.ok) {
+                const jsonResponse = await response.json();
+                alert(jsonResponse.message);
+                taskInput.value = '';
+                loadTasks();
+            } else {
+                const errorResponse = await response.json();
+                alert(`Error: ${errorResponse.error}`);
+            }
+        });
+
+        async function loadTasks() {
+            const response = await fetch('http://localhost:3000/tasks');
+            const tasks = await response.json();
+            taskList.innerHTML = '';
+
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.textContent = task.task;
+                taskList.appendChild(li);
+            });
+        }
+
+        loadTasks();
+    </script>
+</body>
+</html>

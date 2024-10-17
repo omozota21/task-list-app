@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password  # Cambia esto
+      MYSQL_DATABASE: task_list_db  # Cambia esto
+      MYSQL_USER: your_user  # Cambia esto
+      MYSQL_PASSWORD: your_user_password  # Cambia esto
+    ports:
+      - "3307:3306"  # Cambiado a 3306 para que coincida con el puerto por defecto
+
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: your_user  # Cambia esto si usas otro usuario
+      DB_PASSWORD: your_user_password  # Cambia esto si usas otra contraseña
+      DB_NAME: task_list_db  # Asegúrate de que sea el mismo que MYSQL_DATABASE
+
+    frontend:
+       build: ./frontend
+       ports:
+         - "3001:3000"  # Cambia esto si tu frontend se ejecuta en un puerto diferente
+       depends_on:
+        - backend  # Asegúrate de que el backend esté disponible antes de iniciar el frontend
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306  # Esto debe ser 3306 para coincidir con el contenedor MySQL
+
+volumes:
+  db_data:
