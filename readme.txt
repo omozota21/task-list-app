@@ -30,6 +30,11 @@ ponemos ete codigo en el navegador
     phpMyAdmin: 
         http://localhost:8080 
 
+
+Como se ve la estructura de mi ejercicio
+Anteriormente en mi presentación cometí el error de tener mal el código introduciendo el frontend dentro del backend siendo este 
+el error crucial que hizo que no se pudiera ver, al saber ya esto la solución y como estaba planificado al sacar el frontend
+obteniendo así el tercer Contenedor Backend / Frontend / BaseDeDatos
 Como se ve la enstructura de mi ejercicio
     task-list-app/
     │
